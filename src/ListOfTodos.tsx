@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import {useContext} from 'react';
-import {TodosContext } from "./App";
+import { useContext } from "react";
+import { TodosContext } from "./App";
 
 const TodosDiv = styled.table`
   margin: 30px auto;

@@ -8,27 +8,41 @@ const H1 = styled.h1`
   text-align: center;
 `;
 
-export type Todo = {name:string, date:{day:string, month:string, year:string}}
-export const TodosContext = React.createContext({} as {todos:Todo[], completeTodo: ((name:string)=>void), handleSubmit:((todo:Todo)=>void)});
+export type Todo = {
+  name: string;
+  date: { day: string; month: string; year: string };
+};
+export const TodosContext = React.createContext(
+  {} as ReturnType<typeof useValues>
+);
 
-const App = () => {
-   
+const useValues = () => {
   const [todos, setTodos] = useState([] as Todo[]);
 
   function completeTodo(name: string) {
-    todos.length && setTodos((prevTodos) => prevTodos.filter((todo) => todo.name !== name));
+    todos.length &&
+      setTodos((prevTodos) => prevTodos.filter((todo) => todo.name !== name));
   }
 
-  function handleSubmit(todo:Todo): void {
+  function handleSubmit(todo: Todo) {
     setTodos((prevTodos) => [...prevTodos, todo]);
-    
   }
+  return {
+    todos,
+    completeTodo,
+    handleSubmit,
+  };
+};
+
+const App = () => {
+  const values = useValues();
+
   return (
     <div>
       <H1>Todo List</H1>
-      <TodosContext.Provider value = {{todos, completeTodo, handleSubmit}}>
-      <Form />
-      <ListOfTodos />
+      <TodosContext.Provider value={values}>
+        <Form />
+        <ListOfTodos />
       </TodosContext.Provider>
     </div>
   );
